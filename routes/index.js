@@ -2,60 +2,57 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
-    res.render('index', { title: 'Express' });
+router.get('/', function (req, res) {
+    res.render('index', { title: 'Album List' });
 });
 
-/* GET Hello World page. */
-router.get('/helloworld', function(req, res) {
-	res.render('helloworld', { title: 'Hello, World!' })
-});
-
-/* GET Userlist page. */
-router.get('/userlist', function(req, res) {
+/* GET All Albums page. */
+router.get('/showAlbums', function (req, res) {
     var db = req.db;
-    var collection = db.get('usercollection');
-    collection.find({},{},function(e,docs){
-        res.render('userlist', {
-            "userlist" : docs
+    var collection = db.get('album');
+    collection.find({}, {}, function (e, docs) {
+        res.render('albumlist', {
+            "albums": docs
         });
     });
 });
 
-/* GET New User page. */
-router.get('/newuser', function(req, res) {
-    res.render('newuser', { title: 'Add New User' });
+/* Add New Album page. */
+router.get('/newAlbum', function (req, res) {
+    res.render('newalbum', { title: 'Add New Album' });
 });
 
 /* POST to Add User Service */
-router.post('/adduser', function(req, res) {
+router.post('/newAlbum', function (req, res) {
 
     // Set our internal DB variable
     var db = req.db;
 
     // Get our form values. These rely on the "name" attributes
-    var userName = req.body.username;
-    var userEmail = req.body.useremail;
+    var album = {
+        name: req.body.name,
+        artist: req.body.artist,
+        year: req.body.year,
+        genre: req.body.genre
+    }
 
     // Set our collection
-    var collection = db.get('usercollection');
+    var collection = db.get('album');
 
     // Submit to the DB
-    collection.insert({
-        "username" : userName,
-        "email" : userEmail
-    }, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("There was a problem adding the information to the database.");
-        }
-        else {
-            // If it worked, set the header so the address bar doesn't still say /adduser
-            //res.location("userlist");
-            // And forward to success page
-            res.redirect("userlist");
-        }
-    });
+    collection.insert(
+        album, function (err, doc) {
+            if (err) {
+                // If it failed, return error
+                res.send("There was a problem adding the information to the database.");
+            }
+            else {
+                // If it worked, set the header so the address bar doesn't still say /adduser
+                //res.location("userlist");
+                // And forward to success page
+                res.redirect("/");
+            }
+        });
 });
 
 module.exports = router;

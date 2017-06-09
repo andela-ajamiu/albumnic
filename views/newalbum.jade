@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h1= title
+    form#formAddUser(name="addalbum",method="post",action="/newAlbum")
+        .div
+            input#inputAlbumName(type="text", placeholder="name", name="name")
+        .div
+            input#inputAlbumArtist(type="text", placeholder="artist", name="artist")
+        .div
+            input#inputAlbumYear(type="text", placeholder="year", name="year")
+        .div
+            input#inputAlbumGenre(type="text", placeholder="genre", name="genre")            
+        .div
+            button#btnSubmit(type="submit") Click to Add
+        .div
+            button(type="button", onclick="goToHome()") Cancel, go back Home

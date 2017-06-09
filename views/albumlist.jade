@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1.
+        Here are your albums
+    table
+        thead
+            th ALBUM-NAME
+            th ARTIST
+            th YEAR
+            th GENRE
+        each user in albums
+            tbody
+                td #{user.name}
+                td #{user.artist}
+                td #{user.year}
+                td #{user.genre}
+    button(onclick="goToHome()") Go back to Home
